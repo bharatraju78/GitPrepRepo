@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete element from project &apos;MySecondProject&apos;&#x0D;&#x0A;- Original project: &apos;MySecondProject&apos;&#x0D;&#x0A;- Original element: &apos;MySecondProject/src/com.sai.example.m2p&apos;" description="Delete element" element1="/src&lt;com.sai.example.m2p" element2="/src&lt;com.sai.example" element3="/src&lt;com.sai" elements="3" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1453035822077" subPackages="false" version="1.0"/>
+</session>
