@@ -1,0 +1,5 @@
+package com.fitbit.api.common.service;
+
+public class FitbitApiService {
+
+}

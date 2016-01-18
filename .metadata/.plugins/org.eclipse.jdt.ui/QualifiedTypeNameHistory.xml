@@ -1,4 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="android.R"/>
+<fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
+<fullyQualifiedTypeName name="org.slf4j.LoggerFactory"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMapping"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestMethod"/>
+<fullyQualifiedTypeName name="org.springframework.ui.ModelMap"/>
+<fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.FitbitAPIEntityCache"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.FitbitApiCredentialsCache"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.FitbitApiSubscriptionStorage"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.FitbitApiEntityCacheMapImpl"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.FitbitApiCredentialsCacheMapImpl"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.FitbitApiSubscriptionStorageInMemoryImpl"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.service.FitbitAPIClientService"/>
+<fullyQualifiedTypeName name="com.fitbit.api.model.APIResourceCredentials"/>
+<fullyQualifiedTypeName name="com.fitbit.api.FitbitAPIException"/>
+<fullyQualifiedTypeName name="com.fitbit.api.common.model.user.UserInfo"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.LocalUserDetail"/>
+<fullyQualifiedTypeName name="com.fitbit.api.model.FitbitUser"/>
+<fullyQualifiedTypeName name="com.fitbit.api.common.model.achievement.Achievements"/>
+<fullyQualifiedTypeName name="com.fitbit.api.common.model.achievement.BestAchievements"/>
+<fullyQualifiedTypeName name="com.fitbit.api.common.model.activities.Activities"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="com.fitbit.api.common.model.activities.ActivityLog"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.http.TempCredentials"/>
+<fullyQualifiedTypeName name="net.smartam.leeloo.client.request.OAuthClientRequest.AuthenticationRequestBuilder"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.http.AccessToken"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.FitbitApiClientAgent"/>
+<fullyQualifiedTypeName name="com.fitbit.api.model.APICollectionType"/>
+<fullyQualifiedTypeName name="com.fitbit.api.model.APIFormat"/>
+<fullyQualifiedTypeName name="com.fitbit.api.model.APIVersion"/>
+<fullyQualifiedTypeName name="com.fitbit.api.APIUtil"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.http.Response"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.http.PostParameter"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.Configuration"/>
+<fullyQualifiedTypeName name="com.fitbit.api.client.http.HttpClient"/>
+<fullyQualifiedTypeName name="org.apache.commons.logging.Log"/>
+<fullyQualifiedTypeName name="org.apache.commons.logging.LogFactory"/>
+<fullyQualifiedTypeName name="com.vam.hdad.fitbit.api.FitbitAPIClientSupport"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="org.joda.time.LocalDate"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,214 @@
+package com.isobar.runkeeper.healthgraph;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.joda.time.LocalDate;
+
+import com.fitbit.api.APIUtil;
+import com.fitbit.api.FitbitAPIException;
+import com.fitbit.api.client.FitbitAPIEntityCache;
+import com.fitbit.api.client.FitbitApiClientAgent;
+import com.fitbit.api.client.FitbitApiCredentialsCache;
+import com.fitbit.api.client.FitbitApiCredentialsCacheMapImpl;
+import com.fitbit.api.client.FitbitApiEntityCacheMapImpl;
+import com.fitbit.api.client.FitbitApiSubscriptionStorage;
+import com.fitbit.api.client.FitbitApiSubscriptionStorageInMemoryImpl;
+import com.fitbit.api.client.LocalUserDetail;
+import com.fitbit.api.client.http.AccessToken;
+import com.fitbit.api.client.http.HttpClient;
+import com.fitbit.api.client.http.PostParameter;
+import com.fitbit.api.client.http.Response;
+import com.fitbit.api.client.service.FitbitAPIClientService;
+import com.fitbit.api.common.model.achievement.Achievements;
+import com.fitbit.api.common.model.achievement.BestAchievements;
+import com.fitbit.api.common.model.activities.Activities;
+import com.fitbit.api.common.model.activities.ActivityLog;
+import com.fitbit.api.common.model.user.UserInfo;
+import com.fitbit.api.model.APICollectionType;
+import com.fitbit.api.model.APIFormat;
+import com.fitbit.api.model.APIResourceCredentials;
+import com.fitbit.api.model.APIVersion;
+import com.fitbit.api.model.FitbitUser;
+
+public class RegisterFitbitUser extends HttpServlet {
+	/**
+	 * 
+	 */
+
+	private static final long serialVersionUID = -6131757990185342307L;
+
+	private String apiBaseUrl = "api.fitbit.com";
+	private String fitbitSiteBaseUrl = "http://www.fitbit.com";
+	private String exampleBaseUrl = "http://localhost:8080/MyHealthApp";
+	private String clientConsumerKey = "eaef8ac152949cff1f21194ead32a73f";
+	private String clientSecret = "ea9695417d2675e2904494af72f84390";
+
+	public static final String OAUTH_TOKEN = "oauth_token";
+	public static final String OAUTH_VERIFIER = "oauth_verifier";
+
+	private FitbitAPIEntityCache entityCache = new FitbitApiEntityCacheMapImpl();
+	private FitbitApiCredentialsCache credentialsCache = new FitbitApiCredentialsCacheMapImpl();
+	private FitbitApiSubscriptionStorage subscriptionStore = new FitbitApiSubscriptionStorageInMemoryImpl();
+	protected HttpClient http = new HttpClient();
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		try {
+
+			FitbitAPIClientService<FitbitApiClientAgent> client = new FitbitAPIClientService<FitbitApiClientAgent>(
+					new FitbitApiClientAgent(apiBaseUrl, fitbitSiteBaseUrl, credentialsCache), clientConsumerKey,
+					clientSecret, credentialsCache, entityCache, subscriptionStore);
+
+			System.out.println(
+					"request.getParameter('completeAuthorization')" + request.getParameter("completeAuthorization"));
+			if (request.getParameter("completeAuthorization") != null) {
+				String oauth_token = request.getParameter(OAUTH_TOKEN);
+				String oauth_verifier = request.getParameter(OAUTH_VERIFIER);
+				System.out.println("tempTokenReceived " + oauth_token);
+				System.out.println("tempTokenVerifier " + oauth_verifier);
+				APIResourceCredentials resourceCredentials = client.getResourceCredentialsByTempToken(oauth_token);
+
+				if (resourceCredentials == null) {
+					throw new ServletException(
+							"Unrecognized temporary token when attempting to complete authorization: " + oauth_token);
+				}
+				// Get token credentials only if necessary:
+				LocalUserDetail localUserDetail = null;
+				FitbitApiClientAgent agent = null;
+				String userId = null;
+				String token = null;
+				String tokenSecret = null;
+				if (!resourceCredentials.isAuthorized()) {
+					// The verifier is required in the request to get token
+					// credentials:
+					resourceCredentials.setTempTokenVerifier(oauth_verifier);
+					System.out.println(resourceCredentials.getLocalUserId());
+					try {
+						client.getTokenCredentials(new LocalUserDetail(resourceCredentials.getLocalUserId()));
+						// Get token credentials for user:
+
+						userId = resourceCredentials.getLocalUserId();
+						token = resourceCredentials.getAccessToken();
+						tokenSecret = resourceCredentials.getAccessTokenSecret();
+
+						System.out.println("UserId=" + userId);
+						System.out.println("Token=" + token);
+						System.out.println("TokenSecret=" + tokenSecret);
+
+					} catch (FitbitAPIException e) {
+						e.printStackTrace();
+						throw new ServletException("Unable to finish authorization with Fitbit.", e);
+					}
+				}
+
+				try {
+
+					localUserDetail = new LocalUserDetail(resourceCredentials.getLocalUserId());
+
+					resourceCredentials = new APIResourceCredentials(userId, token, tokenSecret);
+					resourceCredentials.setAccessToken(token);
+					resourceCredentials.setAccessTokenSecret(tokenSecret);
+					client.saveResourceCredentials(localUserDetail, resourceCredentials);
+
+					agent = client.getClient();
+
+					agent.getCredentialsCache().saveResourceCredentials(localUserDetail, resourceCredentials);
+
+					UserInfo userInfo = agent.getUserInfo(localUserDetail);
+					request.setAttribute("userInfo", userInfo);
+					System.out.println("userInfo : " + userInfo.getDisplayName());
+					agent.getActivities(localUserDetail, new FitbitUser(resourceCredentials.getLocalUserId()),
+							new LocalDate());
+
+					Response res = getActivities(localUserDetail, new FitbitUser(resourceCredentials.getLocalUserId(), new LocalDate());
+					res.get
+
+					request.getRequestDispatcher("/fitbitApiAuthExample.jsp").forward(request, response);
+				} catch (FitbitAPIException e) {
+					e.printStackTrace();
+					throw new ServletException("Exception during getting user info", e);
+				}
+			} else {
+				try {
+					String url = client.getResourceOwnerAuthorizationURL(new LocalUserDetail("227F9J"),
+							exampleBaseUrl + "/fitbitApiAuthExample?completeAuthorization=&oauth_nonce=227F9J");
+					System.out.println("URL : " + url);
+					response.sendRedirect(url);
+				} catch (FitbitAPIException e) {
+					throw new ServletException("Exception during performing authorization", e);
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("ZUH OH: " + e.getMessage());
+		}
+	}
+	
+	public void setOAuthAccessToken(AccessToken accessToken) {
+        http.setOAuthAccessToken(accessToken);
+    }
+	
+	public void setOAuthAccessToken(String token, String tokenSecret, String encodedUserId) {
+        setOAuthAccessToken(new AccessToken(token, tokenSecret));
+    }
+	
+	protected void setAccessToken(LocalUserDetail localUser) {
+        // Get the access token for the user:
+        APIResourceCredentials resourceCredentials = credentialsCache.getResourceCredentials(localUser);
+        // Set the access token in the client:
+        setOAuthAccessToken(resourceCredentials.getAccessToken(), resourceCredentials.getAccessTokenSecret(), resourceCredentials.getLocalUserId());
+    }
+	
+	public Activities getActivities(LocalUserDetail localUser, FitbitUser fitbitUser, LocalDate date) throws FitbitAPIException {
+        // Example: GET /1/user/228TQ4/activities/date/2010-02-25.json
+        Response res = getCollectionResponseForDate(localUser, fitbitUser, APICollectionType.activities, date);
+        throwExceptionIfError(res);
+        return Activities.constructActivities(res);
+    }
+
+	public Response getCollectionResponseForDate(LocalUserDetail localUser, FitbitUser fitbitUser,
+			APICollectionType type, LocalDate date) throws FitbitAPIException {
+		setAccessToken(localUser);
+		// Example: GET /1/user/228TQ4/foods/log/date/2010-02-25.json
+		String url = APIUtil.constructFullUrl(getApiBaseUrl(), APIVersion.BETA_1, fitbitUser, type.activities, date,
+				APIFormat.JSON);
+		Response res = httpGet(url, true);
+		throwExceptionIfError(res);
+		return res;
+	}
+	
+	public String getApiBaseUrl() {
+        return "http://" + apiBaseUrl;
+    }
+	
+	protected Response httpGet(String url, boolean authenticate) throws FitbitAPIException {
+        return httpGet(url, null, authenticate);
+    }
+	
+	protected Response httpGet(String url, PostParameter[] params, boolean authenticate) throws FitbitAPIException {
+        return http.get(appendParamsToUrl(url, params), authenticate);
+    }
+	
+	protected static String appendParamsToUrl(String url, PostParameter[] params) {
+        if (null != params && params.length > 0) {
+            return url + '?' + HttpClient.encodeParameters(params);
+        }
+        return url;
+    }
+
+	public static void throwExceptionIfError(Response res) throws FitbitAPIException {
+		if (res.isError()) {
+			throw new FitbitAPIException(getErrorMessage(res));
+		}
+	}
+
+	public static String getErrorMessage(Response res) throws FitbitAPIException {
+		return res.isError() ? res.asString() : "";
+	}
+}

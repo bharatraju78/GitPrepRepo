@@ -20,8 +20,16 @@
 		<servlet-class>com.isobar.runkeeper.healthgraph.RegisterUser</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>registerFitbit</servlet-name>
+		<servlet-class>com.isobar.runkeeper.healthgraph.RegisterFitbitUser</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>landing</servlet-name>
 		<servlet-class>com.isobar.runkeeper.healthgraph.LandingServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>fitbitLanding</servlet-name>
+		<servlet-class>com.isobar.runkeeper.healthgraph.FitbitLandingServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>token</servlet-name>
@@ -48,12 +56,24 @@
 	<!-- END: sample servlet mappings -->
 
 	<servlet-mapping>
+		<servlet-name>registerFitbit</servlet-name>
+		<url-pattern>/registerFitbit.html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>register</servlet-name>
 		<url-pattern>/register.html</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>registerFitbit</servlet-name>
+		<url-pattern>/fitbitApiAuthExample</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>landing</servlet-name>
 		<url-pattern>/landing.html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>fitbitLanding</servlet-name>
+		<url-pattern>/fitbitLanding.html</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>token</servlet-name>
